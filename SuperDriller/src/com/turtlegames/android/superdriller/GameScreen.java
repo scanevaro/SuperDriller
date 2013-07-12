@@ -66,9 +66,9 @@ public class GameScreen extends GLScreen {
 		pauseBounds = new Rectangle(0, 448 - 64, 64, 64);
 		resumeBounds = new Rectangle(144 - 64, 224, 64, 64);
 		quitBounds = new Rectangle(144 - 96, 224 - 64, 64, 64);
-		downArrowRectangle = new Rectangle(144 - 32, 0, 64, 64);
+		downArrowRectangle = new Rectangle(64, 0, 64, 64);
 		leftArrowRectangle = new Rectangle(0, 0, 64, 64);
-		rightArrowRectangle = new Rectangle(288 - 64, 0, 64, 64);
+		rightArrowRectangle = new Rectangle(64 + 64, 0, 64, 64);
 		digArrowRectangle = new Rectangle(288 - 64, 0, 64, 64);
 		lastScore = 0;
 		scoreString = "score: 0";
@@ -119,7 +119,7 @@ public class GameScreen extends GLScreen {
 			guiCam.touchToWorld(touchPoint);
 
 			if (event.type == TouchEvent.TOUCH_UP) {
-				
+
 				// Directional events
 				if (OverlapTester.pointInRectangle(downArrowRectangle,
 						touchPoint)) {
@@ -133,7 +133,7 @@ public class GameScreen extends GLScreen {
 						if (world.player.isBlockLeft(block)) {
 							break;
 						} else {
-							if (j == world.blocks.size()) {
+							if (j == world.blocks.size() - 1) {
 								world.player.state = Player.PLAYER_MOVING_LEFT;
 							}
 						}
@@ -143,10 +143,17 @@ public class GameScreen extends GLScreen {
 						touchPoint)) {
 					world.player.looking = Player.LOOKING_RIGHT;
 					for (int j = 0; j < world.blocks.size(); j++) {
-
+						Block block = world.blocks.get(j);
+						if (world.player.isBlockRight(block)) {
+							break;
+						} else {
+							if (j == world.blocks.size() - 1) {
+								world.player.state = Player.PLAYER_MOVING_RIGHT;
+							}
+						}
 					}
 				}
-				
+
 				// Dig events
 				if (OverlapTester.pointInRectangle(digArrowRectangle,
 						touchPoint)) {
@@ -156,16 +163,19 @@ public class GameScreen extends GLScreen {
 							Block block = world.blocks.get(j);
 							world.player.digDown(block);
 						}
+						break;
 					case 1:
 						for (int j = 0; j < world.blocks.size(); j++) {
 							Block block = world.blocks.get(j);
 							world.player.digLeft(block);
 						}
+						break;
 					case 2:
 						for (int j = 0; j < world.blocks.size(); j++) {
 							Block block = world.blocks.get(j);
 							world.player.digRight(block);
 						}
+						break;
 					}
 				}
 			}

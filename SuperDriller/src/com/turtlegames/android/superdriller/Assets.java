@@ -15,7 +15,7 @@ public class Assets {
 	public static TextureRegion dirtBlockRegion;
 	public static TextureRegion stoneBlockRegion;
 	public static TextureRegion arrowButton;
-	//public static TextureRegion digButton;
+	public static TextureRegion digButton;
 
 	public static void load(GLGame game) {
 		background = new Texture(game, "background.png");
@@ -29,6 +29,7 @@ public class Assets {
 		dirtBlockRegion = new TextureRegion(items, 32, 0, 32, 32);
 		stoneBlockRegion = new TextureRegion(items, 64, 0, 32, 32);
 		arrowButton = new TextureRegion(items, 0, 32, 64, 64);
+		digButton = new TextureRegion(items, 64, 32, 64, 64);
 
 	}
 

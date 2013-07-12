@@ -21,6 +21,7 @@ public class Player extends DynamicGameObject {
 	public Player(World world, float x, float y) {
 		super(x, y, PLAYER_WIDTH, PLAYER_HEIGHT);
 		this.world = world;
+		looking = LOOKING_DOWN;
 	}
 
 	public void update(float deltaTime) {
@@ -32,15 +33,19 @@ public class Player extends DynamicGameObject {
 					bounds.height / 2);
 		}
 		if (state == PLAYER_MOVING_LEFT) {
-			velocity.add(World.gravity.y * deltaTime, 0);
+			velocity.y = 0;
+			velocity.add(-5 * deltaTime, 0);
 			position.add(velocity.x * deltaTime, velocity.y * deltaTime);
 			bounds.lowerLeft.set(position).sub(bounds.width / 2,
 					bounds.height / 2);
 		}
 		if (state == PLAYER_MOVING_RIGHT) {
-
+			velocity.y = 0;
+			velocity.add(5 * deltaTime, 0);
+			position.add(velocity.x * deltaTime, velocity.y * deltaTime);
+			bounds.lowerLeft.set(position).sub(bounds.width / 2,
+					bounds.height / 2);
 		}
-
 	}
 
 	public void digDown(Block block) {
@@ -67,6 +72,15 @@ public class Player extends DynamicGameObject {
 	public boolean isBlockLeft(Block block) {
 		// TODO Auto-generated method stub
 		if (position.x - 1 == block.position.x
+				&& position.y == block.position.y) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean isBlockRight(Block block) {
+		if (position.x + 1 == block.position.x
 				&& position.y == block.position.y) {
 			return true;
 		} else {

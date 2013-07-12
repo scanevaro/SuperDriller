@@ -84,9 +84,19 @@ public class World {
 	}
 
 	public void update(float deltaTime) {
-
 		updatePlayer(deltaTime);
+		updateBlocks(deltaTime);
 		checkCollisions();
+	}
+
+	private void updateBlocks(float deltaTime) {
+		// TODO Auto-generated method stub
+		for (int i = 0; i < blocks.size(); i++) {
+			Block block = blocks.get(i);
+			if (block.type == Block.BLOCK_TYPE_STONE) {
+				block.update(deltaTime);
+			}
+		}
 	}
 
 	private void updatePlayer(float deltaTime) {
@@ -95,10 +105,36 @@ public class World {
 	}
 
 	private void checkCollisions() {
-		
+
 		checkPlayerCollision();
+		checkStoneBlocksCollision();
 	}
 
+	private void checkStoneBlocksCollision() {
+		// TODO Auto-generated method stub
+		for (int i = 0; i < blocks.size(); i++) {
+			Block block = blocks.get(i);
+			block.state = Block.BLOCK_FALLING;
+			if (block.type == Block.BLOCK_TYPE_STONE) {
+				for (int j = 0; j < blocks.size(); j++) {
+					Block blockUnder = blocks.get(j);
+					if (blockUnder.position.x == block.position.x
+							&& blockUnder.position.y == block.position.y - 1) {
+						block.state = Block.BLOCK_STILL;
+						continue;
+					} else if (blockUnder.position.y < block.position.y
+							&& blockUnder.position.x == block.position.x) {
+						if (OverlapTester.overlapRectangles(block.bounds,
+								blockUnder.bounds)) {
+							block.state = Block.BLOCK_STILL;
+							block.position.set(blockUnder.position.x,
+									blockUnder.position.y + 1);
+						}
+					}
+				}
+			}
+		}
+	}
 
 	private void checkPlayerCollision() {
 		// TODO Auto-generated method stub
@@ -113,9 +149,36 @@ public class World {
 					player.position.set(block.position.x, block.position.y + 1);
 					player.velocity.x = 0;
 					player.velocity.y = 0;
+				} else {
+					player.state = Player.PLAYER_FALLING;
+				}
+			}
+			if (player.state == Player.PLAYER_MOVING_LEFT) {
+				if (player.position.x < block.position.x
+						&& player.position.y == block.position.y) {
+					if (OverlapTester.overlapRectangles(player.bounds,
+							block.bounds)) {
+						player.state = Player.PLAYER_STANDING;
+						player.position.set(block.position.x + 1,
+								block.position.y);
+						player.velocity.x = 0;
+						player.velocity.y = 0;
+					}
+				}
+			}
+			if (player.state == Player.PLAYER_MOVING_RIGHT) {
+				if (player.position.x > block.position.x
+						&& player.position.y == block.position.y) {
+					if (OverlapTester.overlapRectangles(player.bounds,
+							block.bounds)) {
+						player.state = Player.PLAYER_STANDING;
+						player.position.set(block.position.x - 1,
+								block.position.y);
+						player.velocity.x = 0;
+						player.velocity.y = 0;
+					}
 				}
 			}
 		}
-
 	}
 }
