@@ -26,11 +26,17 @@ public class Player extends DynamicGameObject {
 
 	public void update(float deltaTime) {
 		if (state == PLAYER_FALLING) {
-			velocity.add(World.gravity.x * deltaTime, World.gravity.y
-					* deltaTime);
-			position.add(velocity.x * deltaTime, velocity.y * deltaTime);
-			bounds.lowerLeft.set(position).sub(bounds.width / 2,
-					bounds.height / 2);
+
+			// THE IF BLOCK CHECKS IF THE PLAYER IS AT THE SAME/OR BELOW Y THAT
+			// THE LAST BLOCKS AND STOPS THE UPDATE METHOD FOR KEEP DROPING.
+			// ONLY FOR THE PROTOTIPE
+			if (position.y >= -43.5f) {
+				velocity.add(World.gravity.x * deltaTime, World.gravity.y
+						* deltaTime);
+				position.add(velocity.x * deltaTime, velocity.y * deltaTime);
+				bounds.lowerLeft.set(position).sub(bounds.width / 2,
+						bounds.height / 2);
+			}
 		}
 		if (state == PLAYER_MOVING_LEFT) {
 			velocity.y = 0;

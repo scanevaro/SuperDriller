@@ -6,8 +6,10 @@ public class Block extends DynamicGameObject {
 
 	public static final float BLOCK_WIDTH = 1;
 	public static final float BLOCK_HEIGHT = 1;
-	public static final int BLOCK_TYPE_DIRT = 0;
-	public static final int BLOCK_TYPE_STONE = 1;
+	public static final int BLOCK_TYPE_X = 0;
+	public static final int BLOCK_TYPE_Y = 1;
+	public static final int BLOCK_TYPE_Z = 2;
+	public static final int BLOCK_TYPE_J = 3;
 	public static final float BLOCK_PULVERIZE_TIME = 0.2f * 4;
 	public static final int BLOCK_FALLING = 1;
 	public static final int BLOCK_STILL = 0;
@@ -26,20 +28,22 @@ public class Block extends DynamicGameObject {
 
 	public void update(float deltaTime) {
 		stateTime += deltaTime;
-		if (type == BLOCK_TYPE_STONE) {
+//		if (type == BLOCK_TYPE_Y) {
 			if (state == BLOCK_FALLING) {
 				velocity.add(World.gravity.x * deltaTime, World.gravity.y
 						* deltaTime);
-				position.add(velocity.x * deltaTime, velocity.y * deltaTime);
-				bounds.lowerLeft.set(position).sub(bounds.width / 2,
-						bounds.height / 2);
+				if (position.y >= -43.5f) {
+					position.add(velocity.x * deltaTime, velocity.y * deltaTime);
+					bounds.lowerLeft.set(position).sub(bounds.width / 2,
+							bounds.height / 2);
+				}
 			}
 			if (state == BLOCK_STILL) {
 				velocity.x = 0;
 				velocity.y = 0;
 			}
 
-		}
+//		}
 	}
 
 	public void pulverize() {

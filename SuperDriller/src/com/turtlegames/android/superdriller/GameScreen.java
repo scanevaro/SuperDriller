@@ -20,6 +20,7 @@ public class GameScreen extends GLScreen {
 	static final int GAME_RUNNING = 1;
 	static final int GAME_PAUSED = 2;
 	static final int GAME_OVER = 3;
+	static final int GAME_LEVEL_END = 4;
 
 	int state;
 	Camera2D guiCam;
@@ -34,9 +35,10 @@ public class GameScreen extends GLScreen {
 	Rectangle downArrowRectangle;
 	Rectangle leftArrowRectangle;
 	Rectangle rightArrowRectangle;
-	int lastScore;
-	String scoreString;
+	int lastFrameTime;
+	String timeString;
 	Rectangle digArrowRectangle;
+	float sec;
 
 	public GameScreen(Game game) {
 		super(game);
@@ -70,9 +72,9 @@ public class GameScreen extends GLScreen {
 		leftArrowRectangle = new Rectangle(0, 0, 64, 64);
 		rightArrowRectangle = new Rectangle(64 + 64, 0, 64, 64);
 		digArrowRectangle = new Rectangle(288 - 64, 0, 64, 64);
-		lastScore = 0;
-		scoreString = "score: 0";
-
+		lastFrameTime = 0;
+		timeString = "90000";
+		sec = 0;
 	}
 
 	@Override
@@ -182,6 +184,7 @@ public class GameScreen extends GLScreen {
 
 		}
 		world.update(deltaTime);
+		
 	}
 
 	private void updateReady() {
@@ -199,6 +202,64 @@ public class GameScreen extends GLScreen {
 		gl.glEnable(GL10.GL_TEXTURE_2D);
 
 		renderer.render();
+
+		guiCam.setViewportAndMatrices();
+		gl.glEnable(GL10.GL_BLEND);
+		gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+//		batcher.beginBatch(Assets.items);
+		switch (state) {
+		case GAME_READY:
+			presentReady();
+			break;
+		case GAME_RUNNING:
+			presentRunning(deltaTime);
+			break;
+		case GAME_PAUSED:
+			presentPaused();
+			break;
+		case GAME_LEVEL_END:
+			presentLevelEnd();
+			break;
+		case GAME_OVER:
+			presentGameOver();
+			break;
+		}
+		batcher.endBatch();
+		gl.glDisable(GL10.GL_BLEND);
+
+	}
+
+	private void presentReady() {
+		// TODO Auto-generated method stub
+
+	}
+
+	private void presentRunning(float deltaTime) {
+		// TODO Auto-generated method stub
+		// Código que va restando el tiempo de juego restante
+		String milisecs = Float.toString(deltaTime);
+		int milisecsInt = milisecs.charAt(2) + milisecs.charAt(3);
+		int remainingTime = Integer.parseInt(timeString);
+		String timeRemainingString = String.valueOf(remainingTime - milisecsInt);
+		Assets.font.drawText(batcher, timeRemainingString, 15, 448 - 10);
+		if(remainingTime < 00000) {
+			state = GAME_OVER;
+		}
+	}
+
+	private void presentPaused() {
+		// TODO Auto-generated method stub
+
+	}
+
+	private void presentLevelEnd() {
+		// TODO Auto-generated method stub
+
+	}
+
+	private void presentGameOver() {
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override

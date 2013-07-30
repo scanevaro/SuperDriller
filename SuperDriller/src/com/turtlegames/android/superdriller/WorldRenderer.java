@@ -79,17 +79,24 @@ public class WorldRenderer {
 		for (int i = 0; i < len; i++) {
 			Block block = world.blocks.get(i);
 
-			if (block.type == Block.BLOCK_TYPE_DIRT) {
+			if (block.type == Block.BLOCK_TYPE_X) {
 				batcher.drawSprite(block.position.x, block.position.y,
 						Block.BLOCK_WIDTH, Block.BLOCK_HEIGHT,
-						Assets.dirtBlockRegion);
+						Assets.xBlockRegion);
 
-			} else {
+			} else if (block.type == Block.BLOCK_TYPE_Y) {
 				batcher.drawSprite(block.position.x, block.position.y,
 						Block.BLOCK_WIDTH, Block.BLOCK_HEIGHT,
-						Assets.stoneBlockRegion);
+						Assets.yBlockRegion);
+			} else if (block.type == Block.BLOCK_TYPE_J) {
+				batcher.drawSprite(block.position.x, block.position.y,
+						Block.BLOCK_WIDTH, Block.BLOCK_HEIGHT,
+						Assets.jBlockRegion);
+			} else if (block.type == Block.BLOCK_TYPE_Z) {
+				batcher.drawSprite(block.position.x, block.position.y,
+						Block.BLOCK_WIDTH, Block.BLOCK_HEIGHT,
+						Assets.zBlockRegion);
 			}
-
 		}
 
 	}
