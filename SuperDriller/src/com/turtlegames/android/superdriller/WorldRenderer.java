@@ -83,7 +83,6 @@ public class WorldRenderer {
 				batcher.drawSprite(block.position.x, block.position.y,
 						Block.BLOCK_WIDTH, Block.BLOCK_HEIGHT,
 						Assets.xBlockRegion);
-
 			} else if (block.type == Block.BLOCK_TYPE_Y) {
 				batcher.drawSprite(block.position.x, block.position.y,
 						Block.BLOCK_WIDTH, Block.BLOCK_HEIGHT,

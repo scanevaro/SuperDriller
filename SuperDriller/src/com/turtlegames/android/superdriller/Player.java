@@ -57,7 +57,8 @@ public class Player extends DynamicGameObject {
 	public void digDown(Block block) {
 		if (block.position.y + 1 == position.y
 				&& position.x == block.position.x) {
-			world.blocks.remove(block);
+//			world.blocks.remove(block);
+			cadena(block);
 		}
 	}
 
@@ -93,4 +94,35 @@ public class Player extends DynamicGameObject {
 			return false;
 		}
 	}
+	
+	public void cadena(Block block){
+		if(!world.chainBlocks.contains(block)){
+			world.chainBlocks.add(block);
+		}
+		for(int i = 0; i < world.blocks.size(); i++){
+			Block blockAtSide = world.blocks.get(i);
+			for(int x = -1; x <= 1; x++){
+				for(int y = -1; y <= 1; y++){
+					if(x != 0 || y != 0){
+						if(x == -1){
+							// block down
+							if(block.position.x == blockAtSide.position.x && block.position.y - 1 == blockAtSide.position.y){
+								if(blockAtSide.type == block.type){
+									if(!world.chainBlocks.contains(blockAtSide)){
+										world.chainBlocks.add(blockAtSide);
+										cadena(blockAtSide);
+									}else{
+										for(int j = 0; j < world.chainBlocks.size(); j++){
+											world.chainBlocks.remove(j);
+										}    // LOS BLOQUES NO SE BORRAN PORQUE TAMBIEN ESTAN EN EL ARRAY WORLD.BLOCKS
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
 }

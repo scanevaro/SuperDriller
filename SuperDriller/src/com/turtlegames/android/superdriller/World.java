@@ -20,7 +20,7 @@ public class World {
 		public void coin();
 	}
 
-	public static final float WORLD_WITDH = 9;
+	public static final float WORLD_WIDTH = 9;
 	public static final float WORLD_HEIGHT = 10;
 	public static final int WORLD_STATE_RUNNING = 0;
 	public static final int WORLD_STATE_GAMEOVER = 1;
@@ -30,6 +30,7 @@ public class World {
 
 	public final Player player;
 	public final List<Block> blocks;
+	public final List<Block> chainBlocks;
 	public final WorldListener listener;
 	public final Random rand;
 	public boolean updatePlayer;
@@ -39,6 +40,7 @@ public class World {
 		this.player = new Player(this, 4.5f, WORLD_HEIGHT - 3.5f);
 		this.listener = listener;
 		this.blocks = new ArrayList<Block>();
+		this.chainBlocks = new ArrayList<Block>();
 		rand = new Random();
 		generateLevel();
 		downDrillRectangle = new Rectangle(0, 0, 288, 448);
@@ -47,6 +49,9 @@ public class World {
 
 	private void generateLevel() {
 		// TODO Auto-generated method stub
+
+		// generating first line of blocks and leaving a space in the middle for
+		// the player
 		int typex = Block.BLOCK_TYPE_X;
 		Block block0 = new Block(typex, 0.5f, WORLD_HEIGHT - 3.5f);
 		Block block1 = new Block(typex, 1.5f, WORLD_HEIGHT - 3.5f);
@@ -65,34 +70,37 @@ public class World {
 		blocks.add(block6);
 		blocks.add(block7);
 
+		// number of blocks x
 		int numBlocksX = 9;
+		// number of blocks y
 		int numBlocksY = 50;
 
+		// generating blocks
 		float x = 0.5f;
 		float y = WORLD_HEIGHT - 4.5f;
 		for (int i = 0; i < numBlocksY; i++) {
 			for (int j = 0; j < numBlocksX; j++) {
 				int type = 0;
-				
+
 				float floatType = rand.nextFloat();
-				if(floatType < 0.25f){
+				if (floatType < 0.25f) {
 					type = Block.BLOCK_TYPE_X;
-				}else if(floatType >= 0.25f && floatType < 0.5f){
+				} else if (floatType >= 0.25f && floatType < 0.5f) {
 					type = Block.BLOCK_TYPE_Y;
-				}else if(floatType >= 0.5f && floatType < 0.75f){
+				} else if (floatType >= 0.5f && floatType < 0.75f) {
 					type = Block.BLOCK_TYPE_J;
-				}else if(floatType >= 0.75f){
+				} else if (floatType >= 0.75f) {
 					type = Block.BLOCK_TYPE_Z;
 				}
-				
+
 				Block block = new Block(type, x, y);
 				blocks.add(block);
+
 				x += 1.0f;
 			}
 			x = 0.5f;
 			y -= 1.0f;
 		}
-		
 
 	}
 
@@ -123,74 +131,80 @@ public class World {
 
 	private void checkBlocksCollision() {
 		// TODO Auto-generated method stub
-//		for (int i = 0; i < blocks.size(); i++) {
-//			Block block = blocks.get(i);
-//			block.state = Block.BLOCK_FALLING;
-//			if (block.type == Block.BLOCK_TYPE_Y) {
-//				for (int j = 0; j < blocks.size(); j++) {
-//					Block blockUnder = blocks.get(j);
-//					if (blockUnder.position.x == block.position.x
-//							&& blockUnder.position.y == block.position.y - 1) {
-//						block.state = Block.BLOCK_STILL;
-//						continue;
-//					} else if (blockUnder.position.y < block.position.y
-//							&& blockUnder.position.x == block.position.x) {
-//						if (OverlapTester.overlapRectangles(block.bounds,
-//								blockUnder.bounds)) {
-//							block.state = Block.BLOCK_STILL;
-//							block.position.set(blockUnder.position.x,
-//									blockUnder.position.y + 1);
-//						}
-//					}
-//				}
-//			}
-//		}
-//		for (int i = 0; i < blocks.size(); i++) {
-//			Block block = blocks.get(i);
-//			for (int j = 0; j < blocks.size(); j++) {
-//				Block blockAtSide = blocks.get(j);
-//			 
-//			 // check if block is top	
-//			 if(block.position.x == blockAtSide.position.x && block.position.y == blockAtSide.position.y - 1) {
-//				if(block.type == blockAtSide.type) {
-//					block.state = Block.BLOCK_STILL;
-//					blockAtSide.state = Block.BLOCK_STILL;
-//					continue;
-//				} else if(block.position.x == blockAtSide.position.x && block.position.y == blockAtSide.position.y + 1) {
-//					block.state = Block.BLOCK_STILL;
-//				} else {
-//					block.state = Block.BLOCK_FALLING;
-//				}
-//			
-//			 }
-//			 // check if block is right
-//			 if(block.position.x == blockAtSide.position.x + 1 && block.position.y == blockAtSide.position.y) {
-//					if(block.type == blockAtSide.type) {
-//						block.state = Block.BLOCK_STILL;
-//						blockAtSide.state = Block.BLOCK_STILL;
-//						continue;
-//					} else if(block.position.x == blockAtSide.position.x && block.position.y == blockAtSide.position.y + 1) {
-//						block.state = Block.BLOCK_STILL;
-//					} else {
-//						block.state = Block.BLOCK_FALLING;
-//					}
-//				
-//				 }
-//			 // check if block is left
-//			 if(block.position.x == blockAtSide.position.x - 1 && block.position.y == blockAtSide.position.y) {
-//					if(block.type == blockAtSide.type) {
-//						block.state = Block.BLOCK_STILL;
-//						blockAtSide.state = Block.BLOCK_STILL;
-//						continue;
-//					} else if(block.position.x == blockAtSide.position.x && block.position.y == blockAtSide.position.y + 1) {
-//						block.state = Block.BLOCK_STILL;
-//					} else {
-//						block.state = Block.BLOCK_FALLING;
-//					}
-//				
-//				 }
-//			}
-//		}
+		// for (int i = 0; i < blocks.size(); i++) {
+		// Block block = blocks.get(i);
+		// block.state = Block.BLOCK_FALLING;
+		// if (block.type == Block.BLOCK_TYPE_Y) {
+		// for (int j = 0; j < blocks.size(); j++) {
+		// Block blockUnder = blocks.get(j);
+		// if (blockUnder.position.x == block.position.x
+		// && blockUnder.position.y == block.position.y - 1) {
+		// block.state = Block.BLOCK_STILL;
+		// continue;
+		// } else if (blockUnder.position.y < block.position.y
+		// && blockUnder.position.x == block.position.x) {
+		// if (OverlapTester.overlapRectangles(block.bounds,
+		// blockUnder.bounds)) {
+		// block.state = Block.BLOCK_STILL;
+		// block.position.set(blockUnder.position.x,
+		// blockUnder.position.y + 1);
+		// }
+		// }
+		// }
+		// }
+		// }
+		// for (int i = 0; i < blocks.size(); i++) {
+		// Block block = blocks.get(i);
+		// for (int j = 0; j < blocks.size(); j++) {
+		// Block blockAtSide = blocks.get(j);
+		//
+		// // check if block is top
+		// if(block.position.x == blockAtSide.position.x && block.position.y ==
+		// blockAtSide.position.y - 1) {
+		// if(block.type == blockAtSide.type) {
+		// block.state = Block.BLOCK_STILL;
+		// blockAtSide.state = Block.BLOCK_STILL;
+		// continue;
+		// } else if(block.position.x == blockAtSide.position.x &&
+		// block.position.y == blockAtSide.position.y + 1) {
+		// block.state = Block.BLOCK_STILL;
+		// } else {
+		// block.state = Block.BLOCK_FALLING;
+		// }
+		//
+		// }
+		// // check if block is right
+		// if(block.position.x == blockAtSide.position.x + 1 && block.position.y
+		// == blockAtSide.position.y) {
+		// if(block.type == blockAtSide.type) {
+		// block.state = Block.BLOCK_STILL;
+		// blockAtSide.state = Block.BLOCK_STILL;
+		// continue;
+		// } else if(block.position.x == blockAtSide.position.x &&
+		// block.position.y == blockAtSide.position.y + 1) {
+		// block.state = Block.BLOCK_STILL;
+		// } else {
+		// block.state = Block.BLOCK_FALLING;
+		// }
+		//
+		// }
+		// // check if block is left
+		// if(block.position.x == blockAtSide.position.x - 1 && block.position.y
+		// == blockAtSide.position.y) {
+		// if(block.type == blockAtSide.type) {
+		// block.state = Block.BLOCK_STILL;
+		// blockAtSide.state = Block.BLOCK_STILL;
+		// continue;
+		// } else if(block.position.x == blockAtSide.position.x &&
+		// block.position.y == blockAtSide.position.y + 1) {
+		// block.state = Block.BLOCK_STILL;
+		// } else {
+		// block.state = Block.BLOCK_FALLING;
+		// }
+		//
+		// }
+		// }
+		// }
 	}
 
 	private void checkPlayerCollision() {
