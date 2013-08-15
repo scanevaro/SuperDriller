@@ -130,8 +130,58 @@ public class World {
 	}
 
 	private void checkBlocksCollision() {
-		// TODO Auto-generated method stub
-		// for (int i = 0; i < blocks.size(); i++) {
+				
+	}
+
+	private void checkPlayerCollision() {
+		// Player Move mechanics, including gravity and standing
+		int len = blocks.size();
+		for (int i = 0; i < len; i++) {
+			Block block = blocks.get(i);
+			if (player.position.y > block.position.y
+					&& player.position.x == block.position.x) {
+				// OverlapTester checks if player collision bounds overlaps block's
+				if (OverlapTester
+						.overlapRectangles(player.bounds, block.bounds)) {
+					player.state = Player.PLAYER_STANDING;
+					player.position.set(block.position.x, block.position.y + 1);
+					player.velocity.x = 0;
+					player.velocity.y = 0;
+				} else {
+					player.state = Player.PLAYER_FALLING;
+				}
+			}
+			if (player.state == Player.PLAYER_MOVING_LEFT) {
+				if (player.position.x < block.position.x
+						&& player.position.y == block.position.y) {
+					if (OverlapTester.overlapRectangles(player.bounds,
+							block.bounds)) {
+						player.state = Player.PLAYER_STANDING;
+						player.position.set(block.position.x + 1,
+								block.position.y);
+						player.velocity.x = 0;
+						player.velocity.y = 0;
+					}
+				}
+			}
+			if (player.state == Player.PLAYER_MOVING_RIGHT) {
+				if (player.position.x > block.position.x
+						&& player.position.y == block.position.y) {
+					if (OverlapTester.overlapRectangles(player.bounds,
+							block.bounds)) {
+						player.state = Player.PLAYER_STANDING;
+						player.position.set(block.position.x - 1,
+								block.position.y);
+						player.velocity.x = 0;
+						player.velocity.y = 0;
+					}
+				}
+			}
+		}
+	}
+}
+
+//for (int i = 0; i < blocks.size(); i++) {
 		// Block block = blocks.get(i);
 		// block.state = Block.BLOCK_FALLING;
 		// if (block.type == Block.BLOCK_TYPE_Y) {
@@ -205,51 +255,3 @@ public class World {
 		// }
 		// }
 		// }
-	}
-
-	private void checkPlayerCollision() {
-		// TODO Auto-generated method stub
-		int len = blocks.size();
-		for (int i = 0; i < len; i++) {
-			Block block = blocks.get(i);
-			if (player.position.y > block.position.y
-					&& player.position.x == block.position.x) {
-				if (OverlapTester
-						.overlapRectangles(player.bounds, block.bounds)) {
-					player.state = Player.PLAYER_STANDING;
-					player.position.set(block.position.x, block.position.y + 1);
-					player.velocity.x = 0;
-					player.velocity.y = 0;
-				} else {
-					player.state = Player.PLAYER_FALLING;
-				}
-			}
-			if (player.state == Player.PLAYER_MOVING_LEFT) {
-				if (player.position.x < block.position.x
-						&& player.position.y == block.position.y) {
-					if (OverlapTester.overlapRectangles(player.bounds,
-							block.bounds)) {
-						player.state = Player.PLAYER_STANDING;
-						player.position.set(block.position.x + 1,
-								block.position.y);
-						player.velocity.x = 0;
-						player.velocity.y = 0;
-					}
-				}
-			}
-			if (player.state == Player.PLAYER_MOVING_RIGHT) {
-				if (player.position.x > block.position.x
-						&& player.position.y == block.position.y) {
-					if (OverlapTester.overlapRectangles(player.bounds,
-							block.bounds)) {
-						player.state = Player.PLAYER_STANDING;
-						player.position.set(block.position.x - 1,
-								block.position.y);
-						player.velocity.x = 0;
-						player.velocity.y = 0;
-					}
-				}
-			}
-		}
-	}
-}

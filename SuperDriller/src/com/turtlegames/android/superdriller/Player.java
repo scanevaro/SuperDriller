@@ -25,6 +25,9 @@ public class Player extends DynamicGameObject {
 	}
 
 	public void update(float deltaTime) {
+		
+		// Depending on the State it checks the corresponding block.
+		// It can be a Switch too
 		if (state == PLAYER_FALLING) {
 
 			// THE IF BLOCK CHECKS IF THE PLAYER IS AT THE SAME/OR BELOW Y THAT
@@ -39,9 +42,13 @@ public class Player extends DynamicGameObject {
 			}
 		}
 		if (state == PLAYER_MOVING_LEFT) {
+			// velocity is reset every state change to avoid player moving at the speed of light eventually
 			velocity.y = 0;
+			
 			velocity.add(-5 * deltaTime, 0);
+			// velocity is added to position, but it can be only a number to position, it doesn't really matter
 			position.add(velocity.x * deltaTime, velocity.y * deltaTime);
+			// player bounds update
 			bounds.lowerLeft.set(position).sub(bounds.width / 2,
 					bounds.height / 2);
 		}
@@ -55,10 +62,11 @@ public class Player extends DynamicGameObject {
 	}
 
 	public void digDown(Block block) {
+		// check if block argument is below player
 		if (block.position.y + 1 == position.y
 				&& position.x == block.position.x) {
 //			world.blocks.remove(block);
-			cadena(block);
+			chain(block);
 		}
 	}
 
@@ -95,7 +103,7 @@ public class Player extends DynamicGameObject {
 		}
 	}
 	
-	public void cadena(Block block){
+	public void chain(Block block){
 		if(!world.chainBlocks.contains(block)){
 			world.chainBlocks.add(block);
 		}
@@ -110,10 +118,15 @@ public class Player extends DynamicGameObject {
 								if(blockAtSide.type == block.type){
 									if(!world.chainBlocks.contains(blockAtSide)){
 										world.chainBlocks.add(blockAtSide);
-										cadena(blockAtSide);
+										chain(blockAtSide);
 									}else{
 										for(int j = 0; j < world.chainBlocks.size(); j++){
-											world.chainBlocks.remove(j);
+											for(int k = 0; k < world.blocks.size(); k++){
+												if(world.blocks.get(k).equals(world.chainBlocks.get(0))){
+													world.chainBlocks.remove(0);
+													world.blocks.remove(k);
+												}
+											}
 										}    // LOS BLOQUES NO SE BORRAN PORQUE TAMBIEN ESTAN EN EL ARRAY WORLD.BLOCKS
 									}
 								}
