@@ -10,8 +10,8 @@ import com.badlogic.androidgames.framework.impl.GLGraphics;
 
 public class WorldRenderer {
 
-	static final float FRUSTRUM_WIDTH = 9;
-	static final float FRUSTRUM_HEIGHT = 14;
+	static final float FRUSTUM_WIDTH = 288;
+	static final float FRUSTUM_HEIGHT = 448;
 
 	GLGraphics glGraphics;
 	SpriteBatcher batcher;
@@ -24,7 +24,7 @@ public class WorldRenderer {
 		this.glGraphics = glGraphics;
 		this.batcher = batcher;
 		this.world = world;
-		this.cam = new Camera2D(glGraphics, FRUSTRUM_WIDTH, FRUSTRUM_HEIGHT);
+		this.cam = new Camera2D(glGraphics, FRUSTUM_WIDTH, FRUSTUM_HEIGHT);
 		this.cam.position.y = this.world.player.position.y;
 		rand = new Random();
 	}
@@ -41,8 +41,8 @@ public class WorldRenderer {
 
 	public void renderBackground() {
 		batcher.beginBatch(Assets.background);
-		batcher.drawSprite(cam.position.x, cam.position.y, FRUSTRUM_WIDTH,
-				FRUSTRUM_HEIGHT, Assets.backgroundRegion);
+		batcher.drawSprite(cam.position.x, cam.position.y, FRUSTUM_WIDTH,
+				FRUSTUM_HEIGHT, Assets.backgroundRegion);
 		batcher.endBatch();
 	}
 
@@ -63,13 +63,13 @@ public class WorldRenderer {
 
 	public void renderButtons() {
 		// TODO Auto-generated method stub
-		batcher.drawSprite(3, world.player.position.y - 6, 2, 2,
+		batcher.drawSprite(96, world.player.position.y - 192, 64, 64,
 				Assets.arrowButton);
-		batcher.drawSprite(1, world.player.position.y - 6, 2, 2, 180 + 90,
+		batcher.drawSprite(32, world.player.position.y - 192, 64, 64, 180 + 90,
 				Assets.arrowButton);
-		batcher.drawSprite(5, world.player.position.y - 6, 2, 2, 90,
+		batcher.drawSprite(160, world.player.position.y - 192, 64, 64, 90,
 				Assets.arrowButton);
-		batcher.drawSprite(8, world.player.position.y - 6, 2, 2,
+		batcher.drawSprite(256, world.player.position.y - 192, 64, 64,
 				Assets.digButton);
 	}
 
@@ -102,8 +102,8 @@ public class WorldRenderer {
 
 	private void renderPlayer() {
 		// TODO Auto-generated method stub
-		batcher.drawSprite(world.player.position.x, world.player.position.y, 1,
-				1, Assets.playerRegion);
+		batcher.drawSprite(world.player.position.x, world.player.position.y, world.player.PLAYER_WIDTH,
+				world.player.PLAYER_HEIGHT, Assets.playerRegion);
 	}
 
 }

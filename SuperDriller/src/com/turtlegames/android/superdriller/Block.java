@@ -4,8 +4,8 @@ import com.badlogic.androidgames.framework.DynamicGameObject;
 
 public class Block extends DynamicGameObject {
 
-	public static final float BLOCK_WIDTH = 1;
-	public static final float BLOCK_HEIGHT = 1;
+	public static final float BLOCK_WIDTH = 32;
+	public static final float BLOCK_HEIGHT = 32;
 	public static final int BLOCK_TYPE_X = 0;
 	public static final int BLOCK_TYPE_Y = 1;
 	public static final int BLOCK_TYPE_Z = 2;

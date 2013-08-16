@@ -20,11 +20,11 @@ public class World {
 		public void coin();
 	}
 
-	public static final float WORLD_WIDTH = 9;
-	public static final float WORLD_HEIGHT = 10;
+	public static final float WORLD_WIDTH = 288;
+	public static final float WORLD_HEIGHT = 336;
 	public static final int WORLD_STATE_RUNNING = 0;
 	public static final int WORLD_STATE_GAMEOVER = 1;
-	public static final Vector2 gravity = new Vector2(0, -5);
+	public static final Vector2 gravity = new Vector2(0, -160);
 
 	Rectangle downDrillRectangle;
 
@@ -37,7 +37,7 @@ public class World {
 	public int scrore = 0;
 
 	public World(WorldListener listener) {
-		this.player = new Player(this, 4.5f, WORLD_HEIGHT - 3.5f);
+		this.player = new Player(this, 144, WORLD_HEIGHT - 112);
 		this.listener = listener;
 		this.blocks = new ArrayList<Block>();
 		this.chainBlocks = new ArrayList<Block>();
@@ -53,14 +53,14 @@ public class World {
 		// generating first line of blocks and leaving a space in the middle for
 		// the player
 		int typex = Block.BLOCK_TYPE_X;
-		Block block0 = new Block(typex, 0.5f, WORLD_HEIGHT - 3.5f);
-		Block block1 = new Block(typex, 1.5f, WORLD_HEIGHT - 3.5f);
-		Block block2 = new Block(typex, 2.5f, WORLD_HEIGHT - 3.5f);
-		Block block3 = new Block(typex, 3.5f, WORLD_HEIGHT - 3.5f);
-		Block block4 = new Block(typex, 5.5f, WORLD_HEIGHT - 3.5f);
-		Block block5 = new Block(typex, 6.5f, WORLD_HEIGHT - 3.5f);
-		Block block6 = new Block(typex, 7.5f, WORLD_HEIGHT - 3.5f);
-		Block block7 = new Block(typex, 8.5f, WORLD_HEIGHT - 3.5f);
+		Block block0 = new Block(typex, 16, WORLD_HEIGHT - 112);
+		Block block1 = new Block(typex, 16+32, WORLD_HEIGHT - 112);
+		Block block2 = new Block(typex, 16+32+32, WORLD_HEIGHT - 112);
+		Block block3 = new Block(typex, 16+32+32+32, WORLD_HEIGHT - 112);
+		Block block4 = new Block(typex, 16+32+32+32+32+32, WORLD_HEIGHT - 112);
+		Block block5 = new Block(typex, 16+32+32+32+32+32+32, WORLD_HEIGHT - 112);
+		Block block6 = new Block(typex, 16+32+32+32+32+32+32+32, WORLD_HEIGHT - 112);
+		Block block7 = new Block(typex, 16+32+32+32+32+32+32+32+32, WORLD_HEIGHT - 112);
 		blocks.add(block0);
 		blocks.add(block1);
 		blocks.add(block2);
@@ -76,8 +76,8 @@ public class World {
 		int numBlocksY = 50;
 
 		// generating blocks
-		float x = 0.5f;
-		float y = WORLD_HEIGHT - 4.5f;
+		float x = 16;
+		float y = WORLD_HEIGHT - 144;
 		for (int i = 0; i < numBlocksY; i++) {
 			for (int j = 0; j < numBlocksX; j++) {
 				int type = 0;
@@ -96,10 +96,10 @@ public class World {
 				Block block = new Block(type, x, y);
 				blocks.add(block);
 
-				x += 1.0f;
+				x += 32;
 			}
-			x = 0.5f;
-			y -= 1.0f;
+			x = 16;
+			y -= 32;
 		}
 
 	}
@@ -152,7 +152,7 @@ public class World {
 				}
 			}
 			if (player.state == Player.PLAYER_MOVING_LEFT) {
-				if (player.position.x < block.position.x
+				if (player.position.x > block.position.x
 						&& player.position.y == block.position.y) {
 					if (OverlapTester.overlapRectangles(player.bounds,
 							block.bounds)) {
@@ -165,7 +165,7 @@ public class World {
 				}
 			}
 			if (player.state == Player.PLAYER_MOVING_RIGHT) {
-				if (player.position.x > block.position.x
+				if (player.position.x < block.position.x
 						&& player.position.y == block.position.y) {
 					if (OverlapTester.overlapRectangles(player.bounds,
 							block.bounds)) {
