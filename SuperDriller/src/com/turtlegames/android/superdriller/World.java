@@ -144,7 +144,7 @@ public class World {
 				if (OverlapTester
 						.overlapRectangles(player.bounds, block.bounds)) {
 					player.state = Player.PLAYER_STANDING;
-					player.position.set(block.position.x, block.position.y + 1);
+					player.position.set(block.position.x, block.position.y + 32);
 					player.velocity.x = 0;
 					player.velocity.y = 0;
 				} else {
@@ -157,7 +157,7 @@ public class World {
 					if (OverlapTester.overlapRectangles(player.bounds,
 							block.bounds)) {
 						player.state = Player.PLAYER_STANDING;
-						player.position.set(block.position.x + 1,
+						player.position.set(block.position.x + 32,
 								block.position.y);
 						player.velocity.x = 0;
 						player.velocity.y = 0;
@@ -170,7 +170,7 @@ public class World {
 					if (OverlapTester.overlapRectangles(player.bounds,
 							block.bounds)) {
 						player.state = Player.PLAYER_STANDING;
-						player.position.set(block.position.x - 1,
+						player.position.set(block.position.x - 32,
 								block.position.y);
 						player.velocity.x = 0;
 						player.velocity.y = 0;
